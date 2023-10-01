@@ -73,7 +73,7 @@ namespace li.qubic.community.spectrumInfo
             package[4] = (byte)rand.Next();
             package[5] = (byte)rand.Next();
             package[6] = (byte)rand.Next();
-            package[7] = 0; // deprecatedType // Is it necessary to keep this?
+            package[7] = 31; // deprecatedType
 
 
             // copy public key to package
