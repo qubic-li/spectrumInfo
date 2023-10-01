@@ -1,4 +1,4 @@
-﻿using System.Net.Sockets;
+using System.Net.Sockets;
 using System.Net;
 using System.Runtime.InteropServices;
 
@@ -11,7 +11,6 @@ namespace li.qubic.community.spectrumInfo
         public static bool _finished = false;
         public static string _ip;
         public static string _id;
-        public static short _protocol;
 
 
         public static byte[] GetPublicKeyFromIdentity(string identity)
@@ -37,16 +36,15 @@ namespace li.qubic.community.spectrumInfo
 
         static void Main(string[] args)
         {
-            if(args.Length < 3)
+            if(args.Length < 2)
             {
-                Console.WriteLine("Usage: spectrumInfo.exe <PROTOCOL> <IP_ADDRESS_OF_COMPUTOR> <60-CHAR-ID>");
+                Console.WriteLine("Usage: spectrumInfo.exe <IP_ADDRESS_OF_COMPUTOR> <60-CHAR-ID>");
                 Console.WriteLine("Example: spectrumInfo.exe 11.25.154.34 SLDFHLKJLKJFDLSKJHLSKDHJFLKHJSDFSDFSDFSDFS");
                 return;
             }
 
-            _protocol = short.Parse(args[0]);
-            _ip = args[1];
-            _id = args[2];
+            _ip = args[0];
+            _id = args[1];
 
             AskPeer(_ip);
 
@@ -59,7 +57,6 @@ namespace li.qubic.community.spectrumInfo
 
             var publicKey = GetPublicKeyFromIdentity(_id);
 
-            var protocol = _protocol;
             IPAddress ipAddress = IPAddress.Parse(_ip);
             int port = 21841;
             IPEndPoint remoteEP = new IPEndPoint(ipAddress, port);
@@ -72,11 +69,11 @@ namespace li.qubic.community.spectrumInfo
             var rand = new Random();
             
             package[0] = 40; // define size of package
-            package[3] = (byte)protocol; // protocol
+            package[3] = 31; // request type REQUEST_ENTITY
             package[4] = (byte)rand.Next();
             package[5] = (byte)rand.Next();
             package[6] = (byte)rand.Next();
-            package[7] = 31; // request type REQUEST_ENTITY
+            package[7] = 0; // deprecatedType // Is it necessary to keep this?
 
 
             // copy public key to package
