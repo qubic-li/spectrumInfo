@@ -70,10 +70,9 @@ namespace li.qubic.community.spectrumInfo
             
             package[0] = 40; // define size of package
             package[3] = 31; // request type REQUEST_ENTITY
-            package[4] = (byte)rand.Next();
-            package[5] = (byte)rand.Next();
-            package[6] = (byte)rand.Next();
-            package[7] = 31; // deprecatedType
+
+            byte[] dejavuBytes = BitConverter.GetBytes(rand.Next());
+            Array.Copy(dejavuBytes, 0, package, 4, 4); // dejavu
 
 
             // copy public key to package
